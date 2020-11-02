@@ -3,7 +3,7 @@ from itertools import islice
 
 from django.shortcuts import redirect
 
-from title.models import Category, Genre
+from title.models import Category, Genre, Title
 
 
 def fill_tables(request):
@@ -26,12 +26,25 @@ def fill_tables(request):
                 slug=row[2],
             )
 
-    # with open('data/titles.csv', encoding='utf8') as f:
-    #     reader = csv.reader(f)
-    #     for row in islice(reader, 1, None):
-    #         _, created = Genre.objects.get_or_create(
-    #             id=row[0],
-    #             name=row[1],
-    #             slug=row[2],
-    #         )
+    with open('data/titles.csv', encoding='utf8') as f:
+        reader = csv.reader(f)
+        for row in islice(reader, 1, None):
+            category = Category.objects.get(id=row[3])
+            print(category)
+            _, created = Title.objects.get_or_create(
+                id=row[0],
+                name=row[1],
+                year=row[2],
+                category=category,
+            )
+    with open('data/genre_title.csv', encoding='utf8') as f:
+        reader = csv.reader(f)
+        for row in islice(reader, 1, None):
+            title_id = row[1]
+            genre_id = row[2]
+            genre = Genre.objects.get(id=genre_id)
+            title = Title.objects.get(id=title_id)
+            title.genre = genre
+            title.save()
+
     return redirect("index")

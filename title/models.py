@@ -6,7 +6,7 @@ class Category(models.Model):
     slug = models.SlugField(max_length=255, unique=True)
 
     def __str__(self):
-        return f'{self.id} {self.name}'
+        return self.name
 
 
 class Genre(models.Model):
@@ -14,7 +14,7 @@ class Genre(models.Model):
     slug = models.SlugField(max_length=255, unique=True)
 
     def __str__(self):
-        return f'{self.id} {self.name}'
+        return self.name
 
 
 class Title(models.Model):
@@ -24,7 +24,7 @@ class Title(models.Model):
     genre = models.ForeignKey(Genre, on_delete=models.SET_NULL, null=True,
                               blank=True,
                               related_name='genre_titles')
-    category = models.ForeignKey(Genre, on_delete=models.SET_NULL, null=True,
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True,
                                  blank=True,
                                  related_name='category_titles')
 
