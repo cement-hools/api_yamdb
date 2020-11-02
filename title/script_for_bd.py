@@ -1,6 +1,7 @@
 import csv
 from itertools import islice
 
+from django.http import HttpResponse
 from django.shortcuts import redirect
 
 from title.models import Category, Genre, Title
@@ -30,7 +31,6 @@ def fill_tables(request):
         reader = csv.reader(f)
         for row in islice(reader, 1, None):
             category = Category.objects.get(id=row[3])
-            print(category)
             _, created = Title.objects.get_or_create(
                 id=row[0],
                 name=row[1],
@@ -39,12 +39,14 @@ def fill_tables(request):
             )
     with open('data/genre_title.csv', encoding='utf8') as f:
         reader = csv.reader(f)
+        genres = Genre.objects.all()
+        titles = Title.objects.all()
         for row in islice(reader, 1, None):
             title_id = row[1]
             genre_id = row[2]
-            genre = Genre.objects.get(id=genre_id)
-            title = Title.objects.get(id=title_id)
+            genre = genres[int(genre_id)-1]
+            title = titles[int(title_id)-1]
             title.genre = genre
             title.save()
 
-    return redirect("index")
+    return HttpResponse('ok')
