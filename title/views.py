@@ -3,7 +3,10 @@ from itertools import islice
 
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.viewsets import ModelViewSet
 
+from data.serializers import TitleSerializer
 from title.models import Category, Genre, Title
 
 
@@ -20,3 +23,9 @@ def index(request):
             "title": title
         }
         )
+
+
+class TitlesViewSet(ModelViewSet):
+    queryset = Title.objects.all()
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = TitleSerializer
