@@ -42,10 +42,10 @@ def fill_tables(request):
         genres = Genre.objects.all()
         titles = Title.objects.all()
         for row in islice(reader, 1, None):
-            title_id = row[1]
-            genre_id = row[2]
-            genre = genres[int(genre_id)-1]
-            title = titles[int(title_id)-1]
+            title_id = int(row[1]) - 1
+            genre_id = int(row[1]) - 1
+            genre = genres[title_id]
+            title = titles[genre_id]
             title.genre = genre
             title.save()
 
