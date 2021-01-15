@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class CompositionsConfig(AppConfig):
-    name = 'compositions'
+class TitleConfig(AppConfig):
+    name = 'title'

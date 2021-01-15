@@ -17,3 +17,7 @@ __pycache__/
 media/
 
 db.sqlite3
+
+ToDo.txt
+zz*.txt
+sent_emails/
